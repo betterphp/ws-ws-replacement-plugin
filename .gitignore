@@ -14,3 +14,8 @@ target
 .idea
 ws-ws-replacement.iml
 work
+
+# Vim stuff
+*.swp
+*.swo
+/Session.vim

@@ -35,13 +35,13 @@ public class WsWsReplacementTest
     }
 
     @Test
-    public void freeStyleProjectReplacesTabs() throws Exception
+    public void freeStyleProjectReplacesMultipleSpaces() throws Exception
     {
         // Get a slave to test against
         DumbSlave dumbSlave = JenkinsRule.createOnlineSlave();
 
-        String actualPath = createProjectAndGetPath(dumbSlave, "Project\tWith\t\tTabs");
-        String expectedPath = dumbSlave.getRootPath() + "/workspace/Project_With__Tabs";
+        String actualPath = createProjectAndGetPath(dumbSlave, "Project   With   Multiple   Spaces");
+        String expectedPath = dumbSlave.getRootPath() + "/workspace/Project_With_Multiple_Spaces";
 
         // Check the path has been updated correctly
         assertThat( actualPath,
@@ -49,13 +49,13 @@ public class WsWsReplacementTest
     }
 
     @Test
-    public void freeStyleProjectReplacesMultipleSpaces() throws Exception
+    public void freeStyleProjectReplacesOtherSpecialCharacters() throws Exception
     {
         // Get a slave to test against
         DumbSlave dumbSlave = JenkinsRule.createOnlineSlave();
 
-        String actualPath = createProjectAndGetPath(dumbSlave, "Project   With   Multiple   Spaces");
-        String expectedPath = dumbSlave.getRootPath() + "/workspace/Project___With___Multiple___Spaces";
+        String actualPath = createProjectAndGetPath(dumbSlave, "Project-With-A-Stupid-Name (second edition)");
+        String expectedPath = dumbSlave.getRootPath() + "/workspace/Project_With_A_Stupid_Name_second_edition_";
 
         // Check the path has been updated correctly
         assertThat( actualPath,
@@ -141,7 +141,6 @@ public class WsWsReplacementTest
         FreeStyleBuild freeStyleBuild = freeStyleProject.scheduleBuild2(0).get();
 
         // Return the path of the job
-        String actualPath = freeStyleBuild.getWorkspace().getRemote();
-        return actualPath;
+        return freeStyleBuild.getWorkspace().getRemote();
     }
 }
